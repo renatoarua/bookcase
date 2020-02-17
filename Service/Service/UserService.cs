@@ -13,6 +13,11 @@ namespace Service.Service
             _userRepository = userRepository;
         }
 
+        public async Task<TabUser> authUser(AuthUser authUser)
+        {
+            return await _userRepository.authUser(authUser);
+        }
+
         public async Task<bool> userDelete(int id)
         {
             var user = await _userRepository.userTakeById(id);

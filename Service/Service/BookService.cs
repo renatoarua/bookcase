@@ -36,6 +36,9 @@ namespace Service.Service
         public async Task<IEnumerable<TabBook>> booksTake(string username)
         {
             var user = await _userRepository.userTakeByUsername(username);
+
+            if (user == null) return null;
+
             return await _bookRepository.booksTake(user.UserId);
         }
 

@@ -33,7 +33,8 @@ namespace Repository.Repository
 
         public async Task<IEnumerable<TabBook>> booksTake(int userId)
         {
-            return await _bookcaseContext.TabBook.Where(book => book.UserId == userId).ToListAsync();
+            // AsNoTracking() para não trazer classes referenciadas
+            return await _bookcaseContext.TabBook.Where(book => book.UserId == userId).OrderByDescending(c => c.BookId).ToListAsync();
         }
 
         public async Task<TabBook> bookTake(int id)

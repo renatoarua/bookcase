@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Repository.Models;
 using Service.Interface;
 
 namespace BookcaseAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("v1/[controller]")]
     [ApiController]
     public class BookController : ControllerBase
     {
@@ -18,20 +20,26 @@ namespace BookcaseAPI.Controllers
 
         //GET: api/Book
         [HttpGet("{username}")]
-        public async Task<IEnumerable<TabBook>> Get(string username)
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Get(string username)
         {
-            return await _bookService.booksTake(username);
+            return Ok(await _bookService.booksTake(username));
         }
 
-        // GET: api/Book/5
-        [HttpGet("{bookId}")]
-        public async Task<TabBook> Get(int bookId)
+        // GET: api/Book/GetById/5 , [FromHeader]string Authorization
+        [HttpGet("GetById/{bookId}")]
+        public async Task<IActionResult> GetById(int bookId)
         {
-            return await _bookService.bookTake(bookId);
+            var book = await _bookService.bookTake(bookId);
+
+            if (book == null) return BadRequest("Book not found.");
+
+            return Ok(book);
         }
 
         // POST: api/Book
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post([FromBody]TabBook book)
         {
             var saved = await _bookService.bookSave(book);
@@ -40,6 +48,7 @@ namespace BookcaseAPI.Controllers
 
         // PUT: api/Book/5
         [HttpPut("{userId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Put([FromBody]TabBook book, int userId)
         {
             var saved = await _bookService.bookUpdate(book, userId);
@@ -51,6 +60,7 @@ namespace BookcaseAPI.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{bookId}/{userId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Delete(int bookId, int userId)
         {
             var deleted = await _bookService.bookDelete(bookId, userId);

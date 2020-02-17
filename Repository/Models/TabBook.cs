@@ -16,7 +16,5 @@ namespace Repository.Models
         public DateTime? BookJoinDate { get; set; }
         public int UserId { get; set; }
         public string BookImg64 { get; set; }
-
-        public virtual TabUser User { get; set; }
     }
 }

@@ -52,5 +52,11 @@ namespace Repository.Repository
 
             return true;
         }
+
+        public async Task<TabUser> authUser(AuthUser authUser)
+        {
+            return await _bookcaseContext.TabUser.Where(user => user.UserName == authUser.username && 
+                                                        user.UserPassword == authUser.password).FirstOrDefaultAsync();
+        }
     }
 }

@@ -5,6 +5,7 @@ namespace Repository.Interface
 {
     public interface IUserRepository
     {
+        Task<TabUser> authUser(AuthUser authUser);
         Task<TabUser> userTakeById(int id);
         Task<TabUser> userTakeByUsername(string username);
         Task<TabUser> userTakeByEmail(string email);

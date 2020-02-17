@@ -73,11 +73,6 @@ namespace Repository.Models
                     .IsUnicode(false);
 
                 entity.Property(e => e.UserId).HasColumnName("user_id");
-
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.TabBook)
-                    .HasForeignKey(d => d.UserId)
-                    .HasConstraintName("FK__tab_book__user_i__300424B4");
             });
 
             modelBuilder.Entity<TabUser>(entity =>
